@@ -8,6 +8,4 @@ app.get('/', (request, response) => {
   response.send('Teste');
 });
 
-app.listen(port, () =>
-  console.log(`🤞 Server started at http://localhost:${port}`)
-);
+app.listen(port, () => console.log(`🤞 Server started at http://localhost:${port}`));
