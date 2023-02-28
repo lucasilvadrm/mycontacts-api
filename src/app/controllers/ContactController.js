@@ -82,17 +82,15 @@ class ContactController {
   }
 
   async delete(request, response) {
-    const { id } = request.params;
+    try {
+      const { id } = request.params;
 
-    const contact = await ContactsRepository.findById(id);
+      await ContactsRepository.delete(id);
 
-    if (!contact) {
-      return response.status(404).json({ error: 'Contact not found' });
+      return response.sendStatus(204); // requisição deu certo, mas sem nenhum corpo
+    } catch (error) {
+      return response.status(404).json({ error });
     }
-
-    await ContactsRepository.delete(id);
-
-    return response.sendStatus(204); // requisição deu certo, mas sem nenhum corpo
   }
 }
 
