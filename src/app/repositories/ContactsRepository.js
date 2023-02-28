@@ -37,18 +37,11 @@ class ContactsRepository {
     return row;
   }
 
-  delete(id) {
-    return new Promise((resolve) => {
-      contacts = contacts.filter((contact) => contact.id !== id);
-      resolve();
-    });
-  }
-
   async findByEmail(email) {
     const [row] = await db.query(`
     SELECT * FROM contacts
     WHERE email = $1
-  `, [email]);
+    `, [email]);
     return row;
   }
 
@@ -56,28 +49,30 @@ class ContactsRepository {
     name, email, phone, category_id,
   }) {
     const [row] = await db.query(`
-      INSERT INTO contacts(name, email, phone, category_id)
-      VALUES($1, $2, $3, $4)
-      RETURNING *
+    INSERT INTO contacts(name, email, phone, category_id)
+    VALUES($1, $2, $3, $4)
+    RETURNING *
     `, [name, email, phone, category_id]);
 
     return row;
   }
 
-  update(id, {
+  async update(id, {
     name, email, phone, category_id,
   }) {
-    return new Promise((resolve) => {
-      const updatedContact = {
-        id,
-        name,
-        email,
-        phone,
-        category_id,
-      };
-      contacts = contacts.map((contact) => (contact.id === id ? updatedContact : contact));
+    const [row] = await db.query(`
+      UPDATE contacts
+      SET name = $1, email = $2, phone = $3, category_id = $4
+      WHERE id = $5
+      RETURNING *
+    `, [name, email, phone, category_id, id]);
+    return row;
+  }
 
-      resolve(updatedContact);
+  delete(id) {
+    return new Promise((resolve) => {
+      contacts = contacts.filter((contact) => contact.id !== id);
+      resolve();
     });
   }
 }
