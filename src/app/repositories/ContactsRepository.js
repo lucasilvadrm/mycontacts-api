@@ -1,8 +1,5 @@
 const db = require('../../database');
 
-const test = '';
-test.toUpperCase();
-
 class ContactsRepository {
   async findAll(orderBy = 'ASC') {
     const direction = orderBy.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';

@@ -1,9 +1,11 @@
 const { Router } = require('express');
 
+const CategoryController = require('./app/controllers/CategoryController');
 const ContactController = require('./app/controllers/ContactController');
 
 const router = Router();
 
+// contacts
 router.get('/contacts', (request, response, next) => {
   request.appId = 'MeuAppID';
   next();
@@ -12,5 +14,9 @@ router.get('/contacts/:id', ContactController.show);
 router.delete('/contacts/:id', ContactController.delete);
 router.post('/contacts', ContactController.store);
 router.put('/contacts/:id', ContactController.update);
+
+// categories
+router.get('/categories', CategoryController.index);
+router.post('/categories', CategoryController.store);
 
 module.exports = router;
