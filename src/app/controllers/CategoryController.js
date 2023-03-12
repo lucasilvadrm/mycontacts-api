@@ -7,13 +7,9 @@ class CategoryController {
   }
 
   async show(request, response) {
-    try {
-      const { id } = request.params;
-      const category = await CategoriesRepository.findById(id);
-      response.status(200).json(category);
-    } catch (error) {
-      response.status(400).json({ error });
-    }
+    const { id } = request.params;
+    const category = await CategoriesRepository.findById(id);
+    response.status(200).json(category);
   }
 
   async store(request, response) {
@@ -31,21 +27,17 @@ class CategoryController {
   async update(request, response) {
     const { id } = request.params;
     const { name } = request.body;
-    try {
-      const categoryExists = await CategoriesRepository.findById(id);
-      if (!categoryExists) {
-        return response.status(404).json({ error: 'Category not found' });
-      }
-
-      if (!name) {
-        return response.status(400).json({ error: 'Name is required' });
-      }
-
-      const updatedCategory = await CategoriesRepository.update(id, { name });
-      response.status(200).json(updatedCategory);
-    } catch (error) {
-      response.status(400).json({ error });
+    const categoryExists = await CategoriesRepository.findById(id);
+    if (!categoryExists) {
+      return response.status(404).json({ error: 'Category not found' });
     }
+
+    if (!name) {
+      return response.status(400).json({ error: 'Name is required' });
+    }
+
+    const updatedCategory = await CategoriesRepository.update(id, { name });
+    response.status(200).json(updatedCategory);
   }
 
   async delete(request, response) {
