@@ -25,13 +25,13 @@ class ContactController {
     } = request.body;
 
     if (!name) {
-      return response.status(400).json({ error: 'name is required' });
+      return response.status(400).json({ error: 'Name is required' });
     }
 
     const contactExists = await ContactsRepository.findByEmail(email);
 
     if (contactExists) {
-      return response.status(400).json({ error: 'email já está em uso' });
+      return response.status(400).json({ error: 'This email is already in use' });
     }
 
     const contact = await ContactsRepository.create({
